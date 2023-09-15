@@ -1,0 +1,68 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div id="layout-wrapper">
+        <div class="main-content">
+            <div class="container-fluid">
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="page-title-box d-flex align-items-center justify-content-between">
+                            <h4 class="mb-0 font-size-18">Add Business</h4>
+                        </div>
+                    </div>
+                </div> 
+                <div class="row justify-content-center">
+                  
+                       <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <form method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="{{ form.name.id }}">Enter Business Name:</label>
+                                        {{ form.name }}
+                                    </div>
+                                  
+                                        <button type="submit" class="btn btn-primary">Create Business</button>
+                                
+                                </form>
+                            </div>
+                        </div>
+                       </div>
+                       <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <div class="table-responsive">
+                                    <table class="table table-centered table-hover table-xl mb-0" id="recent-orders">
+                                        <thead>
+                                            <tr>
+                                                <th class="border-top-0">Business</th>
+                                                <th class="border-top-0">Edit</th>
+                                                <th class="border-top-0">Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for business in businesses %}
+                                            <tr>
+                                                <td class="text-truncate">{{ business.name }}</td>
+                                                <td class="text-truncate"><a href=""><i class="fas fa-edit"></i></a></td>
+                                                <td class="text-truncate"><a href=""><i class="fas fa-trash"></i></a></td>
+                                            </tr>
+                                            {% empty %}
+                                            <tr>
+                                                <td colspan="3" class="text-center">No businesses listed</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    
+                                    </table>
+                            </div>
+                        </div>
+                       </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
