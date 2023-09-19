@@ -24,7 +24,7 @@
                                         {{ form.name }}
                                     </div>
                                   
-                                        <button type="submit" class="btn btn-primary">Create Business</button>
+                                        <button type="submit" class="btn btn-primary">Add Business</button>
                                 
                                 </form>
                             </div>
@@ -45,21 +45,30 @@
                                         <tbody>
                                             {% for business in businesses %}
                                             <tr>
-                                                <td class="text-truncate">{{ business.name }}</td>
-                                                <td class="text-truncate"><a href=""><i class="fas fa-edit"></i></a></td>
-                                                <td class="text-truncate"><a href=""><i class="fas fa-trash"></i></a></td>
+                                                <td class="text-truncate">
+                                                    <a href="{% url 'main:create_company' business_id=business.id %}">{{ business.name }}</a>
+                                                </td>
+                                                <td class="text-truncate">
+                                                    <a href="{% url 'main:edit_business' business_id=business.id %}"><i class="fas fa-edit"></i></a>
+                                                </td>
+                                                <td class="text-truncate">
+                                                    <a href="{% url 'main:delete_business' business_id=business.id %}"><i class="fas fa-trash"></i></a>
+                                                </td>
                                             </tr>
-                                            {% empty %}
+                                        {% empty %}
                                             <tr>
                                                 <td colspan="3" class="text-center">No businesses listed</td>
                                             </tr>
-                                            {% endfor %}
+                                        {% endfor %}
+                                        
                                         </tbody>
                                     </table>
                                     
                                     </table>
                             </div>
+
                         </div>
+                      
                        </div>
                 </div>
             </div>

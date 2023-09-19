@@ -1,5 +1,7 @@
 {% extends 'main/base.html' %}
 {% load static %}
+{% load custom_filters %}
+
 
 {% block content %}
     <div id="layout-wrapper">
@@ -8,7 +10,7 @@
                 <div class="row mt-4">
                     <div class="col-12">
                         <div class="page-title-box d-flex align-items-center justify-content-between">
-                            <h4 class="mb-0 font-size-18">{{business.name}} >> Add Category</h4>
+                            <h4 class="mb-0 font-size-18">{{business.name}} Categories>> {{company.name}} >> Documents</h4>
                         </div>
                     </div>
                 </div> 
@@ -17,21 +19,26 @@
                        <div class="col-md-6">
                         <div class="card">
                             <div class="card-body text-center">
+                              <!-- Add section to create documents -->
                                 <form method="post" enctype="multipart/form-data">
                                     {% csrf_token %}
                                     <div class="form-group">
-                                        <label for="{{ form.business.id }}">Business Category:</label>
-                                        {{ form.business }}
+                                        <label for="{{ file.id }}">Upload Document:</label>
+                                        {{form.company}}
+                                        {{ form.file }}
+                                        <!-- Display errors for the 'file' field -->
+                                        {% if form.file.errors %}
+                                            <ul class="errorlist">
+                                                {% for error in file.errors %}
+                                                    <li>{{ error }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
                                     </div>
-                                    <div class="form-group">
-                                        <label for="{{ form.name.id }}">Enter Company Name:</label>
-                                        {{ form.name }}
-                                    </div>
-                                   
-                                
-                                    <button type="submit" class="btn btn-primary">Add Company</button>
+                                    <button type="submit" class="btn btn-primary">Upload Document</button>
                                 </form>
-                                
+
+
                             </div>
                         </div>
                        </div>
@@ -42,23 +49,31 @@
                                     <table class="table table-centered table-hover table-xl mb-0" id="recent-orders">
                                         <thead>
                                             <tr>
-                                                <th class="border-top-0">Category</th>
+                                                <th class="border-top-0">File</th>
                                                 <th class="border-top-0">Edit</th>
                                                 <th class="border-top-0">Delete</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for company in companies %}
+                                            {% for docs in documents %}
                                             <tr>
-                                                <td class="text-truncate"><a href="{% url 'main:create_document' business_id=business.id company_id=company.id %}">{{ company.name }}</a></td>
-                                                <td class="text-truncate"><a href="{% url 'main:edit_company' business_id=business.id company_id=company.id %}"><i class="fas fa-edit"></i></a></td>
-                                                <td class="text-truncate"><a href="{% url 'main:delete_company' business_id=business.id company_id=company.id %}"><i class="fas fa-trash"></i></a></td>
+                                                <td class="text-truncate">
+                                                    {{ docs.file.name|filename }}
+                                                </td>
+                                                
+                                                <td class="text-truncate">
+                                                    <a href=""><i class="fas fa-edit"></i></a>
+                                                </td>
+                                                <td class="text-truncate">
+                                                    <a href=""><i class="fas fa-trash"></i></a>
+                                                </td>
                                             </tr>
-                                            {% empty %}
+                                        {% empty %}
                                             <tr>
-                                                <td colspan="3" class="text-center">No Companies added in this Business Category</td>
+                                                <td colspan="3" class="text-center">No Documents available for this company category</td>
                                             </tr>
-                                            {% endfor %}
+                                        {% endfor %}
+                                        
                                         </tbody>
                                     </table>
                                     

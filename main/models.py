@@ -2,9 +2,7 @@ from django.db import models
 from django.core.validators import *
 from django.core.exceptions import ValidationError
 
-def document_upload_path(instance, filename):
-    # instance.company.business.name contains the business name, and instance.company.name contains the company name
-    return f'{instance.company.business.name}/{instance.company.name}/documents/{filename}'
+
 
 class Business(models.Model):
     name = models.CharField(max_length=100)
@@ -18,6 +16,11 @@ class Company(models.Model):
 
     def __str__(self):
         return self.name
+
+
+def document_upload_path(instance, filename):
+    # instance.company.business.name contains the business name, and instance.company.name contains the company name
+    return f'{instance.company.business.name}/{instance.company.name}/documents/{filename}'
 
 def validate_pdf_extension(value):
     if not value.name.endswith('.pdf'):

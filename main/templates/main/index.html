@@ -2,37 +2,40 @@
 {% load static %}
 
 {% block content %}
-    <div id="layout-wrapper">
-        <div class="main-content">
-            <div class="container-fluid">
-                <div class="row mt-4">
-                    <div class="col-12">
-                        <div class="page-title-box d-flex align-items-center justify-content-between">
-                            <h4 class="mb-0 font-size-18">Listed Companies</h4>
-                        </div>
-                    </div>
-                </div> 
-                <div class="row">
-                    {% if business %}
-                    {% for business in business %}
-                    <div class="col-md-6">
-                        <div class="p-3 mb-3">
-                            <div class="text-center">
-                                <h5>{{ business.name }}</h5>
+<div id="layout-wrapper">
+    <div class="main-content">
+        <div class="container-fluid">
+            <div class="row mt-4">
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title text-center mb-4">Listed Companies</h4>
+                            <div class="row">
+                                {% if business %}
+                                    {% for business_item in business %}
+                                        <div class="col-md-4 mb-3">
+                                            
+                                                    <div class="text-center">
+                                                      <a href="{% url 'main:business' business_item.id %}">  <h5><i class="fas fa-folder"></i> {{ business_item.name }}</h5></a>
+                                                    </div>
+                                         
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="col-12 text-center">
+                                        <p>No company listed yet</p>
+                                    </div>
+                                {% endif %}
                             </div>
+
                         </div>
+                        <!-- end card-body-->
                     </div>
-                    {% if forloop.counter|divisibleby:2 and not forloop.last %}
-                    <div class="w-100"></div>
-                    {% endif %}
-                    {% endfor %}
-                    {% else %}
-                    <div class="col-12 text-center">
-                        <p>No company listed yet</p>
-                    </div>
-                    {% endif %}
+                    <!-- end card -->
+
                 </div>
             </div>
         </div>
     </div>
+</div>
 {% endblock content %}
