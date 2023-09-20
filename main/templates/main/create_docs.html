@@ -20,23 +20,18 @@
                         <div class="card">
                             <div class="card-body text-center">
                               <!-- Add section to create documents -->
-                                <form method="post" enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                    <div class="form-group">
-                                        <label for="{{ file.id }}">Upload Document:</label>
-                                        {{form.company}}
-                                        {{ form.file }}
-                                        <!-- Display errors for the 'file' field -->
-                                        {% if form.file.errors %}
-                                            <ul class="errorlist">
-                                                {% for error in file.errors %}
-                                                    <li>{{ error }}</li>
-                                                {% endfor %}
-                                            </ul>
-                                        {% endif %}
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Upload Document</button>
-                                </form>
+                              <form method="post" enctype="multipart/form-data" id="document-upload-form">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                <input type="submit" value="Upload Documents">
+                              </form>
+                              
+                              <script>
+                                // Add JavaScript code here to enhance file input for multiple selections
+                                const fileInput = document.querySelector('#id_file'); // Replace 'id_file' with the actual field ID
+                                fileInput.setAttribute('multiple', 'multiple');
+                              </script>
+                              
 
 
                             </div>
@@ -55,12 +50,15 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for docs in documents %}
+                                            {% for doc in documents %}
                                             <tr>
                                                 <td class="text-truncate">
-                                                    {{ docs.file.name|filename }}
+                                                    {% if doc.file.name %}
+                                                        {{ doc.file.name|filename }}
+                                                    {% else %}
+                                                        {{ doc|filename_from_path }}
+                                                    {% endif %}
                                                 </td>
-                                                
                                                 <td class="text-truncate">
                                                     <a href=""><i class="fas fa-edit"></i></a>
                                                 </td>

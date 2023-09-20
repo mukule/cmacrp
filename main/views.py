@@ -118,28 +118,26 @@ def delete_company(request, business_id, company_id):
 
 
 def create_document(request, business_id, company_id):
-    # Retrieve the specific business based on the provided business_id
     business = get_object_or_404(Business, pk=business_id)
-
-    # Retrieve the specific company within the selected business based on company_id
     company = get_object_or_404(Company, pk=company_id, business=business)
-
-    # Retrieve documents for the specific company
     documents = Document.objects.filter(company=company)
 
     if request.method == 'POST':
-        # Include 'company' in the form's initial data
         form = DocumentForm(request.POST, request.FILES, initial={'company': company})
 
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Document created successfully.')
-            return redirect('main:create_document', business_id=business_id, company_id=company_id)  # Redirect to the company detail view
+            # Handle multiple file uploads
+            files = request.FILES.getlist('file')  # Get a list of uploaded files
+            for file in files:
+                Document.objects.create(company=company, file=file)
+
+            messages.success(request, 'Documents created successfully.')
+            return redirect('main:create_document', business_id=business_id, company_id=company_id)
+
         else:
-            messages.error(request, 'Error creating the document. Please check the form.')
+            messages.error(request, 'Error creating the documents. Please check the form.')
 
     else:
-        # Include 'company' in the form's initial data
         form = DocumentForm(initial={'company': company})
 
     return render(request, 'main/create_docs.html', {'form': form, 'business': business, 'company': company, 'documents': documents})

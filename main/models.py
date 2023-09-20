@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import *
 from django.core.exceptions import ValidationError
+from django.core.files.storage import FileSystemStorage
 
 
 
@@ -26,10 +27,16 @@ def validate_pdf_extension(value):
     if not value.name.endswith('.pdf'):
         raise ValidationError('Only PDF files are allowed.')
 
+class PreserveExtensionStorage(FileSystemStorage):
+    def get_valid_name(self, name):
+        return name
+
+# In your Document model
 class Document(models.Model):
     # Use FileExtensionValidator to validate the file extension
     file = models.FileField(
         upload_to=document_upload_path,
+        storage=PreserveExtensionStorage(),  # Use the custom storage
         validators=[FileExtensionValidator(allowed_extensions=['pdf'])]
     )
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
