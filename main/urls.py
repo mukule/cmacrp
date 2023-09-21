@@ -16,6 +16,7 @@ urlpatterns = [
     path('delete_business/<int:business_id>/', views.delete_business, name='delete_business'),
     path('delete_company/<int:business_id>/<int:company_id>/', views.delete_company, name='delete_company'),
     path('company/<int:business_id>/company/<int:company_id>/', views.company, name='company'),
+    path('delete_document/<int:document_id>/', views.delete_document, name='delete_document'),
 
     
 ]

@@ -1,17 +1,19 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import *
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
 
 def index(request):
     business = Business.objects.all()  # Retrieve all companies from the database
     return render(request, 'main/index.html', {'business': business})
 
-
+@login_required
 def dashboard(request):
     return render(request, 'main/dashboard.html')
 
 # views.py
-
+@login_required
 def create_business(request):
     businesses = Business.objects.all()  # Retrieve all businesses
     if request.method == 'POST':
@@ -38,7 +40,7 @@ def business(request, business_id):
     }
 
     return render(request, 'main/business.html', context)
-
+@login_required
 def edit_business(request, business_id):
     # Retrieve the specific business based on the provided business_id
     business = get_object_or_404(Business, pk=business_id)
@@ -54,6 +56,7 @@ def edit_business(request, business_id):
 
     return render(request, 'main/edit_business.html', {'form': form, 'business': business})
 
+@login_required
 def delete_business(request, business_id):
     # Retrieve the specific business based on the provided business_id
     business = get_object_or_404(Business, pk=business_id)
@@ -62,7 +65,7 @@ def delete_business(request, business_id):
     business.delete()
     messages.success(request, 'Business deleted successfully.')
     return redirect('main:create_business')
-
+@login_required
 def create_company(request, business_id):
     # Retrieve the specific business based on the provided business_id
     business = get_object_or_404(Business, pk=business_id)
@@ -84,7 +87,7 @@ def create_company(request, business_id):
     return render(request, 'main/create_company.html', {'form': form, 'business': business, 'companies': companies})
 
 
-
+@login_required
 def edit_company(request, business_id, company_id):
     # Retrieve the specific business based on the provided business_id
     business = get_object_or_404(Business, pk=business_id)
@@ -102,7 +105,7 @@ def edit_company(request, business_id, company_id):
         form = CompanyForm(instance=company)
 
     return render(request, 'main/edit_company.html', {'form': form, 'business': business, 'company': company})
-
+@login_required
 def delete_company(request, business_id, company_id):
     # Retrieve the specific business based on the provided business_id
     business = get_object_or_404(Business, pk=business_id)
@@ -116,7 +119,7 @@ def delete_company(request, business_id, company_id):
     messages.success(request, 'Company deleted successfully.')
     return redirect('main:create_company', business_id=business_id)  # Redirect to a company list view within the same business
 
-
+@login_required
 def create_document(request, business_id, company_id):
     business = get_object_or_404(Business, pk=business_id)
     company = get_object_or_404(Company, pk=company_id, business=business)
@@ -141,6 +144,18 @@ def create_document(request, business_id, company_id):
         form = DocumentForm(initial={'company': company})
 
     return render(request, 'main/create_docs.html', {'form': form, 'business': business, 'company': company, 'documents': documents})
+@login_required
+def delete_document(request, document_id):
+    # Get the document object to delete
+    document = get_object_or_404(Document, pk=document_id)
+
+  
+    # Delete the document
+    document.delete()
+    messages.success(request, 'Document deleted successfully.')
+
+    # Redirect back to the document list or wherever you want
+    return redirect('main:create_document', business_id=document.company.business.id, company_id=document.company.id)
 
 
 def company(request, business_id, company_id):

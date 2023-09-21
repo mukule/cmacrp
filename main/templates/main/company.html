@@ -6,29 +6,33 @@
 <div id="layout-wrapper">
     <div class="main-content">
         <div class="container-fluid">
-            <div class="row mt-4">
-                <div class="col-12">
-                    <div class="page-title-box d-flex align-items-center justify-content-between">
-                        <h4 class="mb-0 font-size-18">{{ business.name }} >> {{ company.name }}</h4>
-                    </div>
+            <div class="row mt-1">
+                <div class="col-12 banner">
+                    <img src="{% static 'dashboard/images/banner.jpeg' %}" alt="Banner Image" class="img-fluid">
                 </div>
-            </div>     
+            </div>  
             <div class="row mt-4">
                 <div class="col-xl-12">
                     <div class="card">
                         <div class="card-body">
+                            <h4 class="mb-0 font-size-18">{{ business.name }} >> {{ company.name }}</h4>
                             <h4 class="card-title text-center mb-4">{{ company.name }} Documents</h4>
                             <div class="row">
                                 {% if documents %}
                                     {% for doc in documents %}
                                         <div class="col-md-4 mb-3">
-                                            <div class="text-center">
-                                                <h5><i class="fas fa-file"></i> {% if doc.file.name %}
-                                                    {{ doc.file.name|filename }}
-                                                {% else %}
-                                                    {{ doc|filename_from_path }}
-                                                {% endif %}</h5>
-                                            
+                                            <div class="text-center alert">
+                                                <h5><i class="far fa-file-pdf text-danger"></i>
+                                                    {% if doc.file.url %}
+                                                        <a href="{{ doc.file.url }}" target="_blank" class="text-primary">{{ doc.file.name|filename }}</a>
+                                                    {% else %}
+                                                        {{ doc|filename_from_path }}
+                                                    {% endif %}
+                                                </h5>
+                                                <p>
+                                                    <a href="{{ doc.file.url }}" target="_blank" class="text-primary">View Document</a> |
+                                                    <a href="{{ doc.file.url }}" download class="text-primary">Download Document</a>
+                                                </p>
                                             </div>
                                         </div>
                                     {% endfor %}
@@ -38,6 +42,8 @@
                                     </div>
                                 {% endif %}
                             </div>
+                            
+                            
                         </div>
                     </div>
                 </div>

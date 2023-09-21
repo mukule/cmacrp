@@ -33,9 +33,11 @@ def not_authorized(request):
         template_name="admin/not_authorized.html"
     )
 
+def is_superuser(user):
+    return user.is_superuser
 
-# Create your views here.
-@user_not_authenticated
+
+@user_passes_test(is_superuser)
 def register(request):
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
@@ -57,7 +59,8 @@ def register(request):
         request=request,
         template_name="users/register.html",
         context={"form": form}
-        )
+    )
+
 
 def activateEmail(request, user, to_email):
     mail_subject = 'Activate your user account.'

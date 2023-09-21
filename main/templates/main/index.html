@@ -5,6 +5,12 @@
 <div id="layout-wrapper">
     <div class="main-content">
         <div class="container-fluid">
+            <div class="row mt-1">
+                <!-- Banner Image -->
+                <div class="col-12 banner">
+                    <img src="{% static 'dashboard/images/banner.jpeg' %}" alt="Banner Image" class="img-fluid">
+                </div>
+            </div>  
             <div class="row mt-4">
                 <div class="col-xl-12">
                     <div class="card">
@@ -12,27 +18,25 @@
                             <h4 class="card-title text-center mb-4">Listed Companies</h4>
                             <div class="row">
                                 {% if business %}
-                                    {% for business_item in business %}
-                                        <div class="col-md-4 mb-3">
-                                            
-                                                    <div class="text-center">
-                                                      <a href="{% url 'main:business' business_item.id %}">  <h5><i class="fas fa-folder"></i> {{ business_item.name }}</h5></a>
-                                                    </div>
-                                         
+                                {% for business_item in business %}
+                                    <div class="col-md-4 mb-3">
+                                        <div class="text-center">
+                                            <a href="{% url 'main:business' business_item.id %}" class="text-primary" style="font-size: 18px;"> <!-- Adjust the font size as needed -->
+                                                <i class="fas fa-folder"></i> {{ business_item.name }}
+                                            </a>
                                         </div>
-                                    {% endfor %}
-                                {% else %}
-                                    <div class="col-12 text-center">
-                                        <p>No company listed yet</p>
                                     </div>
+                                {% endfor %}
+                                {% else %}
+                                <div class="col-12 text-center">
+                                    <p>No company listed yet</p>
+                                </div>
                                 {% endif %}
                             </div>
-
                         </div>
                         <!-- end card-body-->
                     </div>
                     <!-- end card -->
-
                 </div>
             </div>
         </div>

@@ -45,7 +45,6 @@
                                         <thead>
                                             <tr>
                                                 <th class="border-top-0">File</th>
-                                                <th class="border-top-0">Edit</th>
                                                 <th class="border-top-0">Delete</th>
                                             </tr>
                                         </thead>
@@ -60,20 +59,19 @@
                                                     {% endif %}
                                                 </td>
                                                 <td class="text-truncate">
-                                                    <a href=""><i class="fas fa-edit"></i></a>
-                                                </td>
-                                                <td class="text-truncate">
-                                                    <a href=""><i class="fas fa-trash"></i></a>
+                                                    <a href="{% url 'main:delete_document' doc.id %}" class="text-danger" onclick="return confirm('Are you sure you want to delete this document?')">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
                                                 </td>
                                             </tr>
-                                        {% empty %}
+                                            {% empty %}
                                             <tr>
-                                                <td colspan="3" class="text-center">No Documents available for this company category</td>
+                                                <td colspan="2" class="text-center">No Documents available for this company category</td>
                                             </tr>
-                                        {% endfor %}
-                                        
+                                            {% endfor %}
                                         </tbody>
                                     </table>
+                                    
                                     
                                     </table>
                             </div>
