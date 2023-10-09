@@ -102,30 +102,7 @@ def generate_random_password(length=10):
     password = ''.join(random.choice(characters) for _ in range(length))
     return password
 
-@user_passes_test(is_system_admin, login_url='users:not_authorized')
-def hrs(request):
-    if request.method == "POST":
-        form = PortalManagementForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=True)
-            access_level_display = user.get_access_level_display()
-            success_message = f'{access_level_display} user created successfully.'
-            messages.success(request, success_message)
-            return redirect('/')
-        else:
-            for error in list(form.errors.values()):
-                messages.error(request, error)
-    else:
-        initial_password = generate_random_password()  # Generate the initial password
-        form = PortalManagementForm(initial={'password1': initial_password, 'password2': initial_password})
 
-        print(initial_password)
-
-    return render(
-        request=request,
-        template_name="admin/hrs.html",
-        context={"form": form, "initial_password": initial_password}
-    )
 
 @user_not_authenticated
 def custom_login(request):
