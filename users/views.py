@@ -37,15 +37,14 @@ def is_superuser(user):
     return user.is_superuser
 
 
-@user_passes_test(is_superuser)
+@user_passes_test(is_superuser, login_url='users:not_authorized')
 def register(request):
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.is_active = False
+            user = form.save()
+            user.is_active = True
             user.save()
-            activateEmail(request, user, form.cleaned_data.get('email'))
             return redirect('/')
 
         else:
