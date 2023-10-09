@@ -20,11 +20,11 @@
                                 {% if business %}
                                 {% for business_item in business %}
                                     <div class="col-md-4 mb-3">
-                                        <div class="text-center">
+                                       
                                             <a href="{% url 'main:business' business_item.id %}" class="text-primary" style="font-size: 18px;"> <!-- Adjust the font size as needed -->
                                                 <i class="fas fa-folder"></i> {{ business_item.name }}
                                             </a>
-                                        </div>
+                                       
                                     </div>
                                 {% endfor %}
                                 {% else %}
